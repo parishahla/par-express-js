@@ -1,3 +1,4 @@
+import queryParse from "./query-parser.js";
 class Router {
   constructor() {
     this.routes = {};
@@ -43,10 +44,12 @@ class Router {
   //? maybe add the method ( as uppercase letters) as well
   handleRequest(req, res) {
     const { url } = req;
+    req.query = queryParse(url);
+    res = createResponse(res);
     const handler = this.routes[url];
     if (handler) {
-      handler(req, res);
       this.executeMiddleware(req, res);
+      handler(req, res);
     } else {
       res.writeHead(404, { "Content-Type": "text/plain" });
       res.end("Not Found");
@@ -54,4 +57,18 @@ class Router {
   }
 }
 
+function createResponse(res) {
+  res.send = (message) => res.end(message);
+
+  res.json = (message) => {
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify(message));
+  };
+
+  res.redirect = (url) => {
+    res.writeHead(302, { Location: `${url}` });
+    res.end();
+  };
+  return res;
+}
 export default Router;
