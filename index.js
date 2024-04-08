@@ -28,7 +28,13 @@ app.router.use((req, res, next) => {
 });
 
 app.router.get("/par", (req, res) => {
-  console.log("made it to the get");
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hello, this is the letsPlay!");
+  //   console.log(req.query);
+  //   res.send("yeah I'm res.send");
+  res.json({ foo: "bar.json" });
+});
+
+app.router.get("/pari", (req, res) => {
+  res.redirect("/par");
+  //   res.json({ par: "par.json" });
+  //   res.end("Hello from /pari");
 });
