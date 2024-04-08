@@ -1,4 +1,4 @@
-import ParExpress from "./letsPlayServer.js";
+import ParExpress from "./server.js";
 
 const app = ParExpress();
 
