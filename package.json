@@ -2,5 +2,14 @@
   "type": "module",
   "devDependencies": {
     "prettier": "^3.2.5"
-  }
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "name": "par-express",
+  "version": "1.0.0",
+  "description": "A simple express clone",
+  "main": "index.js",
+  "author": "pari.dev",
+  "license": "ISC"
 }
