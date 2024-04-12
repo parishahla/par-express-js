@@ -12,14 +12,11 @@ class StaticFileServer {
 
     fs.readFile(fullPath, (err, data) => {
       if (err) {
-        console.log(err);
-        console.log("made it to the read file error");
         res.writeHead(500);
         res.end("Internal server error");
         return;
       }
 
-      console.log("made it to the read file header");
       res.writeHead(200);
       res.end(data);
     });

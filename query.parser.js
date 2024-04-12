@@ -1,5 +1,3 @@
-// query-params.js
-
 function parse(url) {
   const results = url.match(/\?(?<query>.*)/);
   if (!results) {
