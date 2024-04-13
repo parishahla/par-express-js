@@ -1,16 +1,10 @@
 import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 class StaticFileServer {
   serveFile(req, res) {
-    let fullPath = req.url;
-    fullPath = path.join(__dirname, fullPath);
+    const filePath = "." + req.url;
 
-    fs.readFile(fullPath, (err, data) => {
+    fs.readFile(filePath, (err, data) => {
       if (err) {
         res.writeHead(500);
         res.end("Internal server error");

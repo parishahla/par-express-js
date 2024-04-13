@@ -4,36 +4,36 @@ import FileServer from "./file.server.js";
 //! private functions
 class Router {
   constructor() {
-    this.routes = {};
-    this.middleware = [];
     this.index = -1;
   }
+  #routes = {};
+  #middleware = [];
 
   get(path, handler) {
-    this.routes[path] = handler;
+    this.#routes[path] = handler;
   }
 
   post(path, handler) {
-    this.routes[path] = handler;
+    this.#routes[path] = handler;
   }
 
   put(path, handler) {
-    this.routes[path] = handler;
+    this.#routes[path] = handler;
   }
 
   delete(path, handler) {
-    this.routes[path] = handler;
+    this.#routes[path] = handler;
   }
 
   use(middleware) {
-    this.middleware.push(middleware);
+    this.#middleware.push(middleware);
   }
 
-  executeMiddleware(req, res) {
+  #executeMiddleware(req, res) {
     const next = () => {
       this.index++;
-      if (this.index < this.middleware.length) {
-        this.middleware[this.index](req, res, next);
+      if (this.index < this.#middleware.length) {
+        this.#middleware[this.index](req, res, next);
       } else {
         this.index = -1;
         this.handleRequest(req, res);
@@ -45,9 +45,11 @@ class Router {
 
   handleRequest(req, res) {
     const { url } = req;
-    res = this.createResponse(res);
+    res = this.#createResponse(res);
 
-    this.executeMiddleware(req, res);
+    if (this.#middleware.length > 0) {
+      this.#executeMiddleware(req, res);
+    }
 
     if (url.includes("/public")) {
       this.index = -1;
@@ -61,7 +63,7 @@ class Router {
       return res.json(parsedRoute);
     }
 
-    const handler = this.routes[url];
+    const handler = this.#routes[url];
     if (handler) {
       handler(req, res);
     } else {
@@ -71,7 +73,7 @@ class Router {
     }
   }
 
-  createResponse(res) {
+  #createResponse(res) {
     res.send = (message) => {
       this.index = -1;
       res.end(message);
